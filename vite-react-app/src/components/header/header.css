@@ -1,0 +1,42 @@
+.header-container{
+    position: relative;
+    margin: 0px;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 70px;
+    background-color: black;
+}
+
+.header-background{
+    position: fixed;
+    width: 100vw;
+    margin: 0px;
+    top: 0px;
+    left: 0px;
+    height: 70px;
+    background-color: black;
+    z-index: 1000;
+    overflow-y: hidden;
+}
+
+.menu-container{
+    position: fixed;
+    top: -5px;
+    right: 20vw;
+    z-index: 1000;
+}
+
+.menu-container ul{
+    display: flex;
+}
+
+.menu-container li{
+    color: white;
+    margin: 20px;
+}
+
+.menu-container a{
+    text-decoration: none;
+    color: white;
+}
