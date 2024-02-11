@@ -15,6 +15,9 @@ const router = () => {
                 <Route path='/default-porto' element={<PortoPagesDefault/>}/>
                 <Route path='/caesar' element={<div><Header/><Caesar/></div>}/>
                 <Route path='/template-editor' element={<EditTemplate/>}/>
+                <Route path='/hua' element={<h1>testing ajaa</h1>}>
+                    {console.log("hua hua hua hua hua hua hua")}
+                </Route>
                 <Route path='*' element={<h1>404 Not Found</h1>}/>
             </Routes>
         </BrowserRouter>

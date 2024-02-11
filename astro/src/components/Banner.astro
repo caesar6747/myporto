@@ -1,0 +1,139 @@
+---
+interface Props {
+	name: string,
+    identity: string,
+}
+const { name, identity} = Astro.props;
+---
+
+<div class='caesar-porto-page'>
+    <div class='porto-banner'>
+        <h1 class='welcome-word' id='name-word'>Hi I'm {name}</h1>
+        <p class='welcome-word' id='identity-word'>I'm a {identity}</p>
+        <p class='welcome-word' id='welcome-page-word'>Welcome to my portofolio web pages</p>
+    </div>
+</div>
+
+<style>
+    .caesar-porto-page{
+        position: relative;
+        margin-top: 0px;
+        font-size: 0;
+        width: 100%;
+    }
+
+    .porto-banner{
+        position: relative;
+        width: 100%;
+        height: 500px;
+        background-color: var(--color4);
+        top: 0px;
+        display: inline-block;
+    }
+
+    .welcome-word{
+        position: relative;
+        max-width: 50%;
+        top: 50px;
+        left: var(--left-content);
+        animation-name: appear;
+        animation-iteration-count: initial;
+        animation-duration: 1s;
+        background: linear-gradient(-70deg, var(--color8) 0%, var(--color5) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    #name-word{
+        font-size: 3vw;
+    }
+
+    #identity-word {
+        top: 20px;
+        font-size: 1.2vw;
+        animation-duration: 1.5s;
+    }
+
+    #welcome-page-word{
+        font-size: 2vw;
+        animation-duration: 2s;
+    }
+
+    @keyframes appear{
+        0%{
+            opacity: 0%;
+            left: calc(var(--left-content) - 10vw);
+        }
+        100%{
+            opacity: 100%;
+            left: var(--left-content);
+        }
+    }
+
+    @media only screen and (max-width: 1299px){
+        .porto-banner{
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background-color: var(--color4);
+            top: 0px;
+            display: inline-block;
+        }
+        #name-word{
+            font-size: 4vw;
+        }
+
+        #identity-word {
+            top: 20px;
+            font-size: 1.8vw;
+            animation-duration: 1.5s;
+        }
+
+        #welcome-page-word{
+            font-size: 3vw;
+            animation-duration: 2s;
+        }
+    }
+
+    @media only screen and (max-width: 899px){
+        .welcome-word{
+            left: var(--left-content-small);
+            top: 30px;
+            animation-name: appear-small;
+        }
+        .porto-banner{
+            position: relative;
+            width: 100%;
+            height: 300px;
+            background-color: var(--color4);
+            top: 0px;
+            display: inline-block;
+        }
+
+        #name-word{
+            font-size: 5vw;
+        }
+
+        #identity-word {
+            top: 20px;
+            font-size: 2.1vw;
+            animation-duration: 1.5s;
+        }
+
+        #welcome-page-word{
+            font-size: 4vw;
+            animation-duration: 2s;
+        }
+
+        @keyframes appear-small{
+        0%{
+            opacity: 0%;
+            left: calc(var(--left-content-small) - 10vw);
+        }
+        100%{
+            opacity: 100%;
+            left: var(--left-content-small);
+        }
+    }
+    }
+</style>
