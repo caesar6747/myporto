@@ -7,6 +7,17 @@ import Box from '../components/Box.astro'
 import Header from '../components/Header.astro'
 import Banner from '../components/Banner.astro'
 
+import Db from '../utils/db'
+// import {account} from '../models/schema'
+
+// await Db.insert(account).values({
+//     id: 1,
+//     username: "caesarhnc",
+//     password: "wahwewahwe"
+//   });
+const data = await Db.query.account.findMany()
+console.log(data)
+
 const entry = await getEntry("portofolio", "caesar")
 const portofolio = entry.data.portofolio
 ---

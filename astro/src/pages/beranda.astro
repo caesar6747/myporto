@@ -1,0 +1,36 @@
+---
+import Layout from '../layouts/MainLayout.astro'
+import MainHeader from '../components/MainHeader.astro'
+import MenuList from '../components/Menu.astro'
+const headerHeight = "70px"
+---
+
+
+<Layout>
+    <div id="content-container">
+        <MainHeader height={headerHeight}/>
+        <div class="content-page">
+            <MenuList/>
+        </div>
+    </div>
+</Layout>
+
+<style define:vars={{headerHeight}}>
+    .content-container{
+        position: relative;
+        width: 100%;
+        height: auto;
+        overflow-y: hidden;
+    }
+    .content-page{
+        position: relative;
+        top: var(--headerHeight);
+        background-color: aqua;
+        display: grid;
+        grid-template-columns: 10% 90%;
+    }
+    .menu-icon-container{
+        height: 100px;
+        background-color: bisque;
+    }
+</style>

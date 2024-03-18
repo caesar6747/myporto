@@ -1,14 +1,19 @@
 import { defineConfig } from 'astro/config';
 import node from '@astrojs/node'
+import vue from '@astrojs/vue'
 
-// https://astro.build/config
 export default defineConfig({
-    build: {
-        // Example: Generate `page.html` instead of `page/index.html` during build.
-        format: 'file'
-    },
-    output: 'server',
-    adapter: node({
-      mode: "standalone"
-    })
-});
+  output: 'server',
+  server:{
+      port: 80
+  },
+  adapter: node({
+      mode: 'middleware',
+  }),
+  trailingSlash: 'never',
+  redirects: {
+    "/content-test": "/portofolio/test",
+    "/apalah": "/artic/test"
+  },
+  integrations: [vue()]
+})

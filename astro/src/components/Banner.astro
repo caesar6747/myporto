@@ -4,6 +4,8 @@ interface Props {
     identity: string,
 }
 const { name, identity} = Astro.props;
+
+import Cube from './webGL/banner/Decoration.astro'
 ---
 
 <div class='caesar-porto-page'>
@@ -11,6 +13,9 @@ const { name, identity} = Astro.props;
         <h1 class='welcome-word' id='name-word'>Hi I'm {name}</h1>
         <p class='welcome-word' id='identity-word'>I'm a {identity}</p>
         <p class='welcome-word' id='welcome-page-word'>Welcome to my portofolio web pages</p>
+        <div class="anim-3d">
+            <Cube/>
+        </div>
     </div>
 </div>
 
@@ -26,9 +31,17 @@ const { name, identity} = Astro.props;
         position: relative;
         width: 100%;
         height: 500px;
-        background-color: var(--color4);
+        background-color: var(--color-sekunder);
         top: 0px;
         display: inline-block;
+    }
+
+    .anim-3d{
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        right: 0px;
+        top: 0px;
     }
 
     .welcome-word{
@@ -42,6 +55,7 @@ const { name, identity} = Astro.props;
         background: linear-gradient(-70deg, var(--color8) 0%, var(--color5) 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+        z-index: 100;
     }
 
     #name-word{
@@ -75,7 +89,7 @@ const { name, identity} = Astro.props;
             position: relative;
             width: 100%;
             height: 400px;
-            background-color: var(--color4);
+            background-color: var(--color-sekunder);
             top: 0px;
             display: inline-block;
         }
@@ -105,7 +119,7 @@ const { name, identity} = Astro.props;
             position: relative;
             width: 100%;
             height: 300px;
-            background-color: var(--color4);
+            background-color: var(--color-sekunder);
             top: 0px;
             display: inline-block;
         }

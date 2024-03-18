@@ -1,0 +1,280 @@
+---
+---
+
+<div id="render">
+
+</div>
+
+<script>
+    import * as THREE from 'three';
+
+    var cycle = 0;
+    var dWidth, dHeight;
+    var offsetTop, offsetLeft;
+    let mouse = new THREE.Vector2();
+    const height = 500
+    const width = 2000
+    const raycaster = new THREE.Raycaster();
+
+    const scene = new THREE.Scene();
+    const scene2 = new THREE.Scene();
+    const staticScene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera( 30, width / height, 0.01, 1000 );
+
+    const renderer = new THREE.WebGLRenderer({
+        antialias: true
+    });
+    renderer.setSize( width, height );
+    //document.body.appendChild( renderer.domElement );
+    const renderTo = document.getElementById('render');
+    //document.getElementById('render')?.appendChild(renderer.domElement)
+    renderTo.appendChild(renderer.domElement);
+    renderTo.addEventListener('mousemove', onMouseMove, false);
+    
+    const geo = new THREE.BufferGeometry();
+    
+    const vertices = new Float32Array( [
+        -1.0, -1.0,  0.0, // v0
+        1.0, -1.0,  0.0, // v1
+        1.0,  1.0,  0.0, // v2
+        -1.0,  1.0,  0.0, // v3
+    ]);
+    
+    const normals = new Float32Array( [
+        -1.0, -1.0,  1.0, // v0
+        1.0, -1.0,  1.0, // v1
+        1.0,  1.0,  1.0, // v2
+        -1.0,  1.0,  1.0, // v3
+    ]);
+    
+    const indices = [
+        0, 1, 2,
+        2, 3, 0,
+    ];
+    
+    geo.setIndex( indices );
+    geo.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
+    geo.setAttribute( 'normal', new THREE.BufferAttribute( normals, 3 ) );
+    
+    //texture
+    const textureRepeat = [
+        [1, 1], //earth
+        [1, 1] //milkyway
+    ];
+    //earth-day-color
+    const MilkyWay = new THREE.TextureLoader().load( "/milkyWay.jpg" );
+    MilkyWay.wrapS = THREE.RepeatWrapping;
+    MilkyWay.wrapT = THREE.RepeatWrapping;
+    MilkyWay.repeat.set( textureRepeat[1][0], textureRepeat[1][1] );
+    //earth-day-color
+    const EarthColor = new THREE.TextureLoader().load( "/EarthDayColor.jpg" );
+    EarthColor.wrapS = THREE.RepeatWrapping;
+    EarthColor.wrapT = THREE.RepeatWrapping;
+    EarthColor.repeat.set( textureRepeat[0][0], textureRepeat[0][1] );
+    //earth-night-color
+    const EarthNightColor = new THREE.TextureLoader().load( "/EarthNightColor.jpg" );
+    EarthNightColor.wrapS = THREE.RepeatWrapping;
+    EarthNightColor.wrapT = THREE.RepeatWrapping;
+    EarthNightColor.repeat.set( textureRepeat[0][0], textureRepeat[0][1] );
+    //earth-normal
+    const EarthNormal = new THREE.TextureLoader().load( "/EarthNormal.jpg" );
+    EarthNormal.wrapS = THREE.RepeatWrapping;
+    EarthNormal.wrapT = THREE.RepeatWrapping;
+    EarthNormal.repeat.set( textureRepeat[0][0], textureRepeat[0][1] );
+    //earth-specular
+    const EarthSpecular = new THREE.TextureLoader().load( "/EarthSpecular.jpg" );
+    EarthSpecular.wrapS = THREE.RepeatWrapping;
+    EarthSpecular.wrapT = THREE.RepeatWrapping;
+    EarthSpecular.repeat.set( textureRepeat[0][0], textureRepeat[0][1] );
+    //rock-color
+    const texture = new THREE.TextureLoader().load( "/RockColor.jpg" );
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set( textureRepeat[0][0], textureRepeat[0][1] );
+    //concrete-displacement
+    const displacement = new THREE.TextureLoader().load("/ConcreteDisplacement.jpg");
+    displacement.wrapS = THREE.RepeatWrapping;
+    displacement.wrapT = THREE.RepeatWrapping;
+    displacement.repeat.set(textureRepeat[0][0], textureRepeat[0][1]);
+    //concrete-normal
+    const normalMap = new THREE.TextureLoader().load("/ConcreteNormal.jpg");
+    normalMap.wrapS = THREE.RepeatWrapping;
+    normalMap.wrapT = THREE.RepeatWrapping;
+    normalMap.repeat.set(textureRepeat[0][0], textureRepeat[0][1]);
+
+    //shader
+    //earth
+    const material = new THREE.MeshPhongMaterial({ 
+        map: EarthNightColor,
+        normalMap: EarthNormal,
+        displacementMap: EarthSpecular,
+        specularMap: EarthSpecular,
+        color: 0xffffff
+    });
+    material.displacementScale = -0.1;
+    material.normalScale.set(1, 1);
+    //sdfasa
+    const material2 = new THREE.MeshPhongMaterial( { color: 0xffffff } );
+    //milkyway
+    const staticMaterial = new THREE.MeshPhongMaterial({ 
+        map: MilkyWay,
+        color: 0xffffff 
+    });
+
+    //object
+    //planet
+    const geometry = new THREE.SphereGeometry( 8, 256, 128 );
+    const planet = new THREE.Mesh( geometry, material );
+    planet.translateY(-7.5);
+    planet.translateZ(-3);
+    scene.add(planet);
+    //plane
+    const plane = new THREE.SphereGeometry(0.2, 32, 16);
+    const staticMesh = new THREE.Mesh(plane, staticMaterial);
+    staticMesh.translateY(0.6);
+    staticMesh.rotateX(-0.5);
+    staticScene.add(staticMesh);
+    //shape
+    const shape = new THREE.Mesh(geo, material2);
+    shape.translateX(2.0);
+    scene2.add( shape );
+
+    //Fog
+    //scene.fog = new THREE.Fog(0x444444, 0.15, 10);
+    
+    //lightinng
+    //ambiennt
+    const ambientLight = new THREE.AmbientLight(0x202020);
+    const ambientLight1 = new THREE.AmbientLight(0x404040);
+    const ambientLightStatic = new THREE.AmbientLight(0xffffff);
+    scene.add(ambientLight);
+    scene2.add(ambientLight1);
+    staticScene.add(ambientLightStatic);
+    //directional
+    const directLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    const directLightStatic = new THREE.DirectionalLight(0xffffff, 0.8);
+    directLight.position.set(1.0, 1.0, 1.0);
+    directLightStatic.position.set(0.0, 0.6, 2.0);
+    staticScene.add(directLightStatic);
+    //scene.add(directLight);
+    //point
+    const pointLight = new THREE.PointLight(0xffeedd, 100, 12);
+    const pointLightStatic = new THREE.PointLight(0xffffff, 1, 9);
+    pointLight.position.set(5.0, 5.0, 3.0);
+    pointLightStatic.position.set(5.0, 5.0, 5.0);
+    scene.add(pointLight);
+    staticScene.add(pointLightStatic);
+
+
+
+    camera.position.z = 5;
+    var rot = 0.01;
+    var renderState = 0;
+    //lightpos
+    var pointLightX = 15.0;
+    var pointLightState = 1;
+    let updateTexture = false;
+
+    //scene.background = MilkyWay;
+
+    function animate() {
+        requestAnimationFrame( animate );
+        checkResize();
+
+        //change texture
+        if(updateTexture){
+            if(pointLightX < -10.0 || pointLightX > 10.0){
+                planet.material.map = EarthNightColor;
+                planet.material.color = new THREE.Color(0xffffff);
+            }
+            else{
+                planet.material.map = EarthColor;
+                planet.material.color = new THREE.Color(0xaaaaaa);
+            }
+            updateTexture = false;
+            planet.material.map.needsUpdate = true;
+        }else{
+            if(Math.round(pointLightX*10)/10 == -10.0 || Math.round(pointLightX*10)/10 == 10.0){
+                updateTexture = true;
+            }
+        }
+
+        //lighttransform
+        if(pointLightState == 1){
+            pointLightX -= 0.01;
+            if(pointLightX < -15.0){
+                pointLightState = 0;
+            }
+        }
+        else{
+            pointLightX += 0.01;
+            if(pointLightX > 15.0){
+                pointLightState = 1;
+            }
+        }
+        pointLight.position.set(pointLightX, 5.0, 3.0);
+
+        //transform
+        planet.rotateX(0.001);
+        planet.rotateY(0.0005);
+        shape.rotateX(0.03);
+        shape.rotateY(0.03);
+
+        //picking
+        raycaster.setFromCamera( mouse, camera );
+        const intersects = raycaster.intersectObjects( staticScene.children);
+        //const intersects2 = raycaster.intersectObjects( scene2.children);
+
+        if(intersects.length != 0){
+            staticMesh.material.color = new THREE.Color(0xaaaaaa);
+            console.log("fsdafds")
+        }
+        // else if(intersects2.length != 0){
+        //     shape.material.color = new THREE.Color(0xaaaaaa);
+        // }
+        else{
+            staticMesh.material.color = new THREE.Color(0xffffff);
+            shape.material.color = new THREE.Color(0xffffff);
+        }
+
+        //update view
+        if(cycle < 30){
+            cycle++;
+        }else{
+            offsetTop = renderTo.getBoundingClientRect().top;
+            offsetLeft = renderTo.getBoundingClientRect().left;
+            camera.aspect = dWidth / dHeight;
+            camera.updateProjectionMatrix();
+            cycle = 0;
+        }
+
+        //render
+        renderer.setSize( dWidth, dHeight );
+        renderer.autoClear = true;
+        renderer.render(scene, camera);
+        renderer.autoClear = false;
+        //renderer.render(scene2, camera);
+        renderer.render(staticScene, camera);
+    }
+
+    animate();
+
+    function onMouseMove(event){
+        event.preventDefault();
+        mouse.x = ((event.clientX - offsetLeft) / dWidth) * 2 - 1;
+        mouse.y = -((event.clientY - offsetTop) / dHeight) * 2 + 1;
+    }
+
+    function checkResize(){
+        dWidth = renderTo.clientWidth;
+        dHeight = renderTo.clientHeight;
+    }
+</script>
+
+<style>
+    #render{
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+</style>
