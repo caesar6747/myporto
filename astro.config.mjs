@@ -1,7 +1,5 @@
-import { defineConfig, envField } from 'astro/config';
-//import node from '@astrojs/node'
+import { defineConfig, envField } from 'astro/config'
 import vue from '@astrojs/vue'
-//import db from '@astrojs/db'
 
 export default defineConfig({
   experimental:{
@@ -18,10 +16,6 @@ export default defineConfig({
   server:{
     port: 80
   },
-  //output: 'server',
-  // adapter: node({
-  //     mode: 'middleware',
-  // }),
   trailingSlash: 'never',
   redirects: {
     "/content-test": "/portofolio/test",
