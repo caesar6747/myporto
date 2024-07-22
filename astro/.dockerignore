@@ -1,9 +1,0 @@
-node_modules
-npm-debug.log
-Dockerfile
-.dockerignore
-package-lock.json
-.gitignore
-.vscode
-.astro
-dist

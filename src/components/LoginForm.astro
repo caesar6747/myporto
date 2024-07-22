@@ -1,0 +1,64 @@
+<div class="login-form">
+    <form class="form" method="post" action="/login">
+        <input class="input" name="username" type="text" placeholder="username"/>
+        <input class="input" name="password" type="password" placeholder="password"/>
+        <button class="button" type="submit">login</button>
+    </form>
+</div>
+
+<style>
+    .login-form{
+        position: absolute;
+        width: 20%;
+        height: 300px;
+        border-radius: 20px;
+        background-color: bisque;
+        left: 40%;
+        top: 200px;
+    }
+    .form{
+        position: relative;
+        width: 100%;
+        display: inline-grid;
+        margin-top: 20px;
+    }
+    .input{
+        position: relative;
+        margin-left: 15%;
+        margin-right: 15%;
+        margin-top: 30px;
+        height: 30px;
+        border-radius: 15px;
+        padding-left: 20px;
+        padding-right: 20px;
+        border: none;
+    }
+    .button{
+        position: relative;
+        width: 70%;
+        margin-top: 30px;
+        margin-left: 15%;
+        font-size: 17px;
+        height: 30px;
+        background-color: aquamarine;
+        border: none;
+        border-radius: 7px;
+    }
+    .button:hover{
+        opacity: 50%;
+    }
+
+    @media only screen and (max-width: 1299px){
+        .login-form{
+            width: 30%;
+            left: 35%;
+        }
+    }
+
+    @media only screen and (max-width: 900px){
+        .login-form{
+            width: 50%;
+            left: 25%;
+        }
+    }
+</style>

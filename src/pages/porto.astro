@@ -1,0 +1,39 @@
+---
+import {getEntry} from 'astro:content'
+import '../components/Purecss.scss'
+import Layout from '../layouts/LayoutPorto.astro'
+import ListLayout from '../layouts/BoxListLayout.astro'
+import Box from '../components/Box.astro'
+import Header from '../components/Header.astro'
+import Banner from '../components/Banner.astro'
+
+const data = {
+    name: "caesar",
+    identity: "hsadfasd",
+    project_image: "sadfsadfsa",
+    project_name: "sadfads",
+    description: "sadfasdfsa"
+}
+
+const portofolio = [data, data, data]
+---
+
+<Layout>
+    <Header/>
+    <Banner
+        name={data.name}
+        identity={data.identity}
+    />
+    <ListLayout title={"sdafsad"}>
+        {portofolio.map(data =>{
+            console.log(data)
+            return(
+                <Box
+                    image_url={data.project_image}
+                    content_title={data.project_name}
+                    content_describe={data.description}
+                />
+            )
+        })}
+    </ListLayout>
+</Layout>

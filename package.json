@@ -1,0 +1,31 @@
+{
+  "name": "grateful-graham",
+  "type": "module",
+  "version": "0.0.1",
+  "main": "app.js",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "build-db": "astro db execute dist/content.db",
+    "deno": "deno run --allow-net --allow-read --allow-env ./dist/server/entry.mjs",
+    "node": "node app.js",
+    "generate": "drizzle-kit generate:sqlite"
+  },
+  "dependencies": {
+    "@astrojs/node": "^8.2.0",
+    "@astrojs/vue": "^4.0.8",
+    "astro": "latest",
+    "express": "^4.18.2",
+    "moment": "^2.30.1",
+    "npm": "^10.4.0",
+    "purecss": "^3.0.0",
+    "sass": "^1.70.0",
+    "three": "^0.161.0"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.0.5"
+  }
+}
