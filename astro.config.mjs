@@ -1,7 +1,7 @@
 import { defineConfig, envField } from 'astro/config';
 //import node from '@astrojs/node'
 import vue from '@astrojs/vue'
-import db from '@astrojs/db'
+//import db from '@astrojs/db'
 
 export default defineConfig({
   experimental:{
@@ -15,6 +15,9 @@ export default defineConfig({
       }
     }
   },
+  server:{
+    port: 80
+  },
   //output: 'server',
   // adapter: node({
   //     mode: 'middleware',
@@ -26,6 +29,5 @@ export default defineConfig({
   },
   integrations: [
     vue(),
-    db(),
   ]
 })
