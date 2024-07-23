@@ -1,35 +1,163 @@
 ---
-import Layout from '../layouts/MainLayout.astro'
-import MainHeader from '../components/MainHeader.astro'
-import MenuList from '../components/Menu.astro'
-const headerHeight = "70px"
+import Header from '../components/MainHeader.astro'
+import Preview from '../components/ContentPreview.astro'
+import '../components/Purecss.scss'
 ---
 
-<Layout>
-    <div id="content-container">
-        <MainHeader height={headerHeight}/>
-        <div class="content-page">
-            <MenuList/>
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>beranda</title>
+    </head>
+    <body>
+        <Header 
+            class="content-left" 
+            class2="head-height" 
+            height={"70px"} 
+            displayMenu="none" 
+            displaySearch="blok" 
+            displayMenuHor="blok"
+            classSearch="search"
+        />
+        <div class="content">
+            <div class="preview-container" onclick="window.location='/artic/fakta-ular-gurun'">
+                <Preview buttonDeck="butt-deck" imageContent="https://img.okezone.com/content/2023/12/18/406/2941096/viral-ratusan-ular-berbisa-dan-kalajengking-bermunculan-di-kota-makkah-pertanda-apa-4clGsJ8Bnb.JPG"/>
+            </div>
+            <div class="preview-container" onclick="window.location='/artic/history-of-bug'">
+                <Preview buttonDeck="butt-deck"/>
+            </div>
+            <div class="preview-container" onclick="window.location='/artic/test'">
+                <Preview buttonDeck="butt-deck" imageContent="https://media.istockphoto.com/id/1390038554/id/foto/tyrannosaurus-dari-ilustrasi-3d-era-kapur.jpg?s=1024x1024&w=is&k=20&c=o-LK-nJzfLzNeSc_0CHhXlrbh3-PlHdqoGw-4nzFaa8="/>
+            </div>
+            <div class="preview-container" onclick="window.location='/artic/fakta-ular-gurun'">
+                <Preview buttonDeck="butt-deck" imageContent="https://img.okezone.com/content/2023/12/18/406/2941096/viral-ratusan-ular-berbisa-dan-kalajengking-bermunculan-di-kota-makkah-pertanda-apa-4clGsJ8Bnb.JPG"/>
+            </div>
+            <div class="preview-container" onclick="window.location='/artic/history-of-bug'">
+                <Preview buttonDeck="butt-deck"/>
+            </div>
+            <div class="preview-container" onclick="window.location='/artic/test'">
+                <Preview buttonDeck="butt-deck" imageContent="https://media.istockphoto.com/id/1390038554/id/foto/tyrannosaurus-dari-ilustrasi-3d-era-kapur.jpg?s=1024x1024&w=is&k=20&c=o-LK-nJzfLzNeSc_0CHhXlrbh3-PlHdqoGw-4nzFaa8="/>
+            </div>
         </div>
-    </div>
-</Layout>
+        <slot/>
+    </body>
+</html>
 
-<style define:vars={{headerHeight}}>
-    .content-container{
+<style is:global>
+    body{
+        background-color: seashell;
         position: relative;
-        width: 100%;
-        height: auto;
-        overflow-y: hidden;
+        margin: 0px;
+        z-index: -1000;
     }
-    .content-page{
+    .content{
         position: relative;
-        top: var(--headerHeight);
-        background-color: aqua;
-        display: grid;
-        grid-template-columns: 10% 90%;
+        top: 80px;
+        z-index: -100;
     }
-    .menu-icon-container{
-        height: 100px;
-        background-color: bisque;
+    .content-left{
+        left: 0px;
+    }
+    .head-height{
+        height: 70px;
+    }
+    .preview-container{
+        position: relative;
+        z-index: -1001;
+        width: 50%;
+    }
+    .preview-container:hover{
+        opacity: 70%;
+    }
+
+    @media (pointer: coarse)  {
+	/* mobile device */
+        .content{
+            width: 90%;
+            left: 5%;
+            top: 120px;
+        }
+        .content-left{
+            left: 5%;
+            font-size: 3vw;
+        }
+        .head-height{
+            height: 120px;
+
+        }
+        .preview-container{
+            width: 95%;
+        }
+        #cat{
+            position: relative;
+            top: 30px;
+        }
+        .title{
+            font-size: 8vw !important;
+        }
+        p{
+            font-size: 3vw !important;
+        }
+        h2{
+            font-size: 4vw;
+        }
+        .search{
+            left: 55% !important;
+        }
+        .butt-deck .icon p{
+            width: 100%;
+            top: -30px;
+            font-size: smaller;
+        }
+        .butt-deck img{
+            top: 60px;
+            height: 40px;
+        }
+    }
+
+    @media (pointer: fine), (pointer: none) {
+	/* desktop */
+        .content{
+            width: 1000px;
+            left: calc((100% - 1000px)/2);
+        }
+        .content-left{
+            left: calc((100% - 1000px)/2);
+        }
+        .search{
+            left: calc(((100% - 1000px)/2) + 25%) !important;
+        }
+        .head-height{
+            height: 70px;
+        }
+        .preview-container{
+        }
+        #cat{
+            position: relative;
+            top: 20px;
+        }
+        .title{
+            font-size: 3em !important;
+        }
+
+        .butt-deck img{
+            top: 20px;
+            height: 20px;
+        }
+        .preview-container:hover{
+            opacity: 70%;
+        }
+        @media only screen and (max-width: 999px) {
+            .content{
+                left: 0px;
+            }
+            .content-left{
+                left: 0px;
+            }
+            .search{
+                left: 50% !important;
+            }
+        }
     }
 </style>

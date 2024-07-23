@@ -1,7 +1,7 @@
 ---
 import Header from "../components/MainHeader.astro"
 import '../components/Purecss.scss'
-import CSS from "../components/Content.astro"
+//import CSS from "../components/Content.astro"
 const {frontmatter} = Astro.props;
 const headerHeight = "70px"
 ---
@@ -13,11 +13,10 @@ const headerHeight = "70px"
         <title>{frontmatter.title}</title>
         <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
     </head>
-    <body>
-        <CSS/>
-        <Header class="content-left" height={headerHeight} displayMenu="none" displaySearch="none" displayMenuHor="blok"/>
+    <body> 
+        <Header class="content-left" class2="head-height" height={headerHeight} displayMenu="none" displaySearch="none" displayMenuHor="blok"/>
         <div class="content">
-            <p>{frontmatter.category}</p>
+            <p id="cat">{frontmatter.category}</p>
             <div class="content-head">
                 <h1 class="title">{frontmatter.contentTitle}</h1>
                 <p class="description"><span><a href="/porto">{frontmatter.author}</a></span> | <span>{frontmatter.publish}</span> | <span>{frontmatter.timeread}</span></p>
@@ -32,17 +31,24 @@ const headerHeight = "70px"
     body{
         background-color: #272727;
         margin: 0px;
+        width: 100%;
         font-family: 'Roboto';
         color: #bababa;
     }
     .content{
         position: absolute;
         top: var(--headerHeight);
-        width: 50%;
-        left: 25%;
+    }
+    #cat{
+        position: relative;
+        top: 30px;
     }
     .content-left{
         left: 25%;
+    }
+    .head-height{
+        height: 70px;
+        min-width: 1000px;
     }
     .content-head{
         position: relative;
@@ -61,25 +67,23 @@ const headerHeight = "70px"
         font-size: 1.2vh;
     }
 
-    @media only screen and (max-width: 1800px) {
-        .content{
-            width: 70%;
-            left: 15%;
-        }
-        .content-left{
-            left: 15%;
-        }
-        .title{
-            font-size: 3vw !important;
-        }
-    }
-    @media only screen and (max-width: 1500px) {
+    @media (pointer: coarse)  {
+	/* mobile device */
         .content{
             width: 90%;
             left: 5%;
         }
         .content-left{
             left: 5%;
+            font-size: 2.5vw;
+        }
+        .head-height{
+            height: 120px;
+
+        }
+        #cat{
+            position: relative;
+            top: 30px;
         }
         .title{
             font-size: 8vw !important;
@@ -91,31 +95,36 @@ const headerHeight = "70px"
             font-size: 4vw;
         }
     }
-    @media only screen and (max-width: 1100px) {
+
+    @media (pointer: fine), (pointer: none) {
+	/* desktop */
         .content{
-            width: 90%;
-            left: 5%;
+            width: 1000px;
+            left: calc((100% - 1000px)/2);
         }
         .content-left{
-            left: 5%;
+            left: calc((100% - 1000px)/2);
+        }
+        .head-height{
+            height: 70px;
+        }
+        #cat{
+            position: relative;
+            top: 20px;
         }
         .title{
-            font-size: 7vw !important;
+            font-size: 3em !important;
+        }
+
+        @media only screen and (max-width: 999px) {
+            .content{
+                left: 0px;
+            }
+            .content-left{
+                left: 0px;
+            }
         }
     }
-    @media only screen and (max-width: 720px) {
-        .content{
-            width: 96%;
-            left: 2%;
-        }
-        .content-left{
-            left: 2%;
-        }
-        .title{
-            font-size: 8vw !important;
-        }
-        p{
-            font-size: 2vw;
-        }
-    }
+
+    
 </style>

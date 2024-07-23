@@ -1,14 +1,22 @@
 ---
 import Menu from '../components/icons/menu-icon.astro'
 import Search from '../components/icons/search.astro'
-const {height, displayMenu, displaySearch, displayMenuHor, class: className} = Astro.props
+const {
+    height, 
+    displayMenu, 
+    displaySearch, 
+    displayMenuHor, 
+    class: className, 
+    class2: className2,
+    classSearch: search, 
+} = Astro.props
 ---
 
-<div id="main-header">
+<div id="main-header" class={className2}>
     <div id="nav-toogle">
         <Menu class="menu-icon-from-height"/>
     </div>
-    <div id="search-container">
+    <div id="search-container" class={search}>
         <Search class="search-div" bg_color="rgb(100, 100, 100)"/>
     </div>
     <div class:list={["menu-hor-container", className]}>
@@ -31,7 +39,6 @@ const {height, displayMenu, displaySearch, displayMenuHor, class: className} = A
         top: 0px;
         left: 0px;
         width: 100%;
-        height: var(--height);
         background-color: black;
         display: inline-flex;
     }

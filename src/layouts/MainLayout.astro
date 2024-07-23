@@ -1,10 +1,21 @@
+---
+import Header from '../components/MainHeader.astro'
+import Preview from '../components/ContentPreview.astro'
+---
+
 <!doctype html>
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <title>MyPorto</title>
+        <title>home</title>
     </head>
     <body>
+        <Header class="content-left" class2="head-height" height={"70px"} displayMenu="none" displaySearch="blok" displayMenuHor="blok"/>
+        <div class="content">
+            <div class="preview-container">
+                <Preview/>
+            </div>
+        </div>
         <slot/>
     </body>
 </html>
@@ -13,5 +24,76 @@
     body{
         background-color: aquamarine;
         margin: 0px;
+    }
+    .content{
+        position: relative;
+        width: 60%;
+        left: 20%;
+    }
+    .content-left{
+        left: 0px;
+    }
+    .preview-container{
+        position: relative;
+        width: 50%;
+        height: 200px;
+    }
+    @media (pointer: coarse)  {
+	/* mobile device */
+        .content{
+            width: 90%;
+            left: 5%;
+        }
+        .content-left{
+            left: 5%;
+            font-size: 2.5vw;
+        }
+        .head-height{
+            height: 120px;
+
+        }
+        #cat{
+            position: relative;
+            top: 30px;
+        }
+        .title{
+            font-size: 8vw !important;
+        }
+        p{
+            font-size: 3vw !important;
+        }
+        h2{
+            font-size: 4vw;
+        }
+    }
+
+    @media (pointer: fine), (pointer: none) {
+	/* desktop */
+        .content{
+            width: 1000px;
+            left: calc((100% - 1000px)/2);
+        }
+        .content-left{
+            left: calc((100% - 1000px)/2);
+        }
+        .head-height{
+            height: 70px;
+        }
+        #cat{
+            position: relative;
+            top: 20px;
+        }
+        .title{
+            font-size: 3em !important;
+        }
+
+        @media only screen and (max-width: 999px) {
+            .content{
+                left: 0px;
+            }
+            .content-left{
+                left: 0px;
+            }
+        }
     }
 </style>

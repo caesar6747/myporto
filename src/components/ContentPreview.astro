@@ -1,0 +1,84 @@
+---
+const {buttonDeck: deck, imageContent} = Astro.props
+---
+
+<div class="preview">
+    <div class="creator-profile"></div>
+    <a href="/porto">creator name</a>
+    <div class="sub-preview">
+        <div>
+            <h1>Content Title dsambfsa dsafasdf sdafasd</h1>
+            <p>this is description content preview. this for testing</p>
+        </div>
+        <img src={imageContent}/>
+    </div>
+    <div class:list={["button-deck", deck]}>
+        <div class="icon"><img src="/write.svg"/><p>23 jul</p></div>
+        <div class="icon"><img src="/eye.svg"/><p>23732</p></div>
+        <div class="icon"><img src="/heart.svg"/><p>423245</p></div>
+    </div>
+</div>
+
+<style>
+    .preview{
+        position: relative;
+        width: 100%;
+        height: 100%;
+        padding: 10px;
+    }
+    .creator-profile{
+        position: relative;
+        height: 30px;
+        aspect-ratio: 1/1;
+        border-radius: 100%;
+        background-color: blue;
+        overflow: hidden;
+    }
+    a{
+        position: relative;
+        left: 50px;
+        top: -20px;
+    }
+    h1{
+        position: relative;
+        left: 0px;
+        top: -20px;
+    }
+    p{
+        position: relative;
+        left: 0px;
+        top: -20px;
+    }
+    .sub-preview{
+        position: relative;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 70% 30%;
+    }
+    .sub-preview img{
+        position: relative;
+        width: 100%;
+        margin: 10px;
+    }
+    .button-deck{
+        position: relative;
+        top: -20px;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 30% 30% 30%;
+        column-gap: 10%;
+    }
+    .button-deck .icon{
+        position: relative;
+        display: grid;
+        grid-template-columns: auto auto;
+    }
+    .button-deck .icon p{
+        left: -30px;
+    }
+    .button-deck img{
+        position: relative;
+        aspect-ratio: 1/1;
+        top: -5px;
+    }
+</style>
