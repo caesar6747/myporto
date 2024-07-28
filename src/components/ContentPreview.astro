@@ -1,22 +1,29 @@
 ---
-const {buttonDeck: deck, imageContent} = Astro.props
+const {buttonDeck: deck, creator_name, creator_img, tittle, content_img, like, posted, view, prev_desc} = Astro.props
 ---
 
-<div class="preview">
-    <div class="creator-profile"></div>
-    <a href="/porto">creator name</a>
+<div class="preview" onclick="window">
+    <div class="flex">
+        <img class="rounded-full w-9 h-9" src={creator_img}/>
+        <a href="/porto" class="ps-3"><span class="sm:text-xl md:text-3sm lg:text-sm inline-blok align-middle text-gray-700 dark:text-gray-300">{creator_name}</span></a>
+    </div>
+    <br class="text-sm"/>
     <div class="sub-preview">
         <div>
-            <h1>Content Title dsambfsa dsafasdf sdafasd</h1>
-            <p>this is description content preview. this for testing</p>
+            <h1 class="sm:text-5xl md:text-3xl lg:text-3xl leading-none tracking-tight text-gray-900 dark:text-white font-bold">{tittle}</h1>
+            <p class="max-h-32 text-gray-500 sm:text-4xl md:text-lg dark:text-gray-400 text-ellipsis overflow-hidden line-clamp-3">{prev_desc}</p>
         </div>
-        <img src={imageContent}/>
+        <img src={content_img}/>
     </div>
-    <div class:list={["button-deck", deck]}>
-        <div class="icon"><img src="/write.svg"/><p>23 jul</p></div>
-        <div class="icon"><img src="/eye.svg"/><p>23732</p></div>
-        <div class="icon"><img src="/heart.svg"/><p>423245</p></div>
+    <div class="flex lg:h-5 sm:h-10 mt-5">
+        <img src="/write.svg" class="md:h-5 md:w-5 sm:h-7 sm:w-7"/>
+        <p class="md:text-sm sm:text-2xl ms-2 me-7 text-gray-500 dark:text-gray-400">{posted}</p>
+        <img src="/eye.svg" class="md:h-5 md:w-5 sm:h-7 sm:w-7"/>
+        <p class="md:text-sm sm:text-2xl ms-2 me-7 text-gray-500 dark:text-gray-400">{view}</p>
+        <img src="/heart.svg" class="md:h-4 md:w-4 sm:h-7 sm:w-7 mt-1"/>
+        <p class="md:text-sm sm:text-2xl ms-2 me-7 text-gray-500 dark:text-gray-400">{like}</p>
     </div>
+    <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
 </div>
 
 <style>
@@ -34,20 +41,8 @@ const {buttonDeck: deck, imageContent} = Astro.props
         background-color: blue;
         overflow: hidden;
     }
-    a{
-        position: relative;
-        left: 50px;
-        top: -20px;
-    }
-    h1{
-        position: relative;
-        left: 0px;
-        top: -20px;
-    }
-    p{
-        position: relative;
-        left: 0px;
-        top: -20px;
+    .creator-profile img{
+        width: 100%;
     }
     .sub-preview{
         position: relative;
@@ -62,7 +57,7 @@ const {buttonDeck: deck, imageContent} = Astro.props
     }
     .button-deck{
         position: relative;
-        top: -20px;
+        top: 10px;
         width: 100%;
         display: grid;
         grid-template-columns: 30% 30% 30%;
@@ -71,14 +66,16 @@ const {buttonDeck: deck, imageContent} = Astro.props
     .button-deck .icon{
         position: relative;
         display: grid;
-        grid-template-columns: auto auto;
-    }
-    .button-deck .icon p{
-        left: -30px;
+        grid-template-columns: 50% 50%;
+        column-gap: 1px;
     }
     .button-deck img{
         position: relative;
         aspect-ratio: 1/1;
         top: -5px;
+        display: inline-block;
+    }
+    #date-post{
+        width: 150px;
     }
 </style>

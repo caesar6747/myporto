@@ -1,5 +1,5 @@
 ---
-import Header from "../components/MainHeaderOriginal.astro"
+import Header from "../components/MainHeader.astro"
 import Footer from '../components/MainFooter.astro'
 
 const {frontmatter} = Astro.props;
@@ -14,20 +14,11 @@ const headerHeight = "70px"
         <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
     </head>
     <body> 
-        <Header 
-            class="content-left" 
-            class2="head-height" 
-            height={headerHeight} 
-            displayMenu="none" 
-            displaySearch="none" 
-            displayMenuHor="blok"
-            displayLogo="blok"
-            classLogo="logo"
-        />
+        <Header/>
         <div class="content">
             <p id="cat">{frontmatter.category}</p>
             <div class="content-head">
-                <h1>{frontmatter.contentTitle}</h1>
+                <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 sm:text-6xl md:text-5xl lg:text-4xl dark:text-white">{frontmatter.contentTitle}</h1>
                 <p class="description"><span><a href="/porto">{frontmatter.author}</a></span> | <span>{frontmatter.publish}</span> | <span>{frontmatter.timeread}</span></p>
             </div>
             <br/>
@@ -52,7 +43,6 @@ const headerHeight = "70px"
     }
     #cat{
         position: relative;
-        top: 30px;
     }
     .content-left{
         left: 25%;
@@ -94,7 +84,7 @@ const headerHeight = "70px"
         }
         #cat{
             position: relative;
-            top: 30px;
+            top: -10px;
         }
         .title{
             font-size: 8vw !important;
@@ -119,7 +109,7 @@ const headerHeight = "70px"
         }
         #cat{
             position: relative;
-            top: 20px;
+            top: -10px;
         }
         .title{
             font-size: 3em !important;

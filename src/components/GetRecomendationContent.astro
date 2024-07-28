@@ -1,0 +1,10 @@
+---
+import {db} from '../db.js'
+const data = await db.query('SELECT * FROM creator')
+---
+
+<div>
+    {data.rows.map( res => {
+        return <p>{res.id}</p>
+    })}
+</div>

@@ -1,0 +1,107 @@
+---
+import Menu from './icons/menu-icon.astro'
+import Search from './icons/search.astro'
+
+const {
+    height, 
+    displayMenu, 
+    displaySearch, 
+    displayMenuHor,
+    displayLogo, 
+    class: className, 
+    class2: className2,
+    classSearch: search,
+    classLogo: logo, 
+} = Astro.props
+---
+
+<div id="main-header" class={className2}>
+    <div id="nav-toogle">
+        <Menu class="menu-icon-from-height"/>
+    </div>
+    <div class:list={["logo-container", logo]}>
+        <img class="logo" src="../caesar-logo.svg" alt="logo caesar cyberpunk"/>
+    </div>
+    <div id="search-container" class={search}>
+        <Search class="search-div" bg_color="rgb(100, 100, 100)"/>
+    </div>
+    <div class:list={["menu-hor-container", className]}>
+        <div class='pure-menu pure-menu-horizontal'>
+            <ul class='pure-menu-list'>
+                <li class='pure-menu-item'><a class='pure-menu-link' href='/'>Home</a></li>
+                <li class='pure-menu-item'><a class='pure-menu-link' href='/'>Kosong</a></li>
+                <li class='pure-menu-item'><a class='pure-menu-link' href='/porto'>About</a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="profile-container">
+        <div id="avatar-container"></div>
+    </div>
+</div>
+
+<style define:vars={{height, displayMenu, displaySearch, displayMenuHor, displayLogo}}>
+    #main-header{
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        background-color: black;
+        display: inline-flex;
+    }
+    #nav-toogle{
+        position: absolute;
+        height: 50%;
+        aspect-ratio: 1/1;
+        top: 25%;
+        left: 20px;
+        display: var(--displayMenu);
+    }
+
+    .logo-container{
+        position: absolute;
+        top: 0px;
+        height: 100%;
+    }
+    .logo-container .logo{
+        position: absolute;
+        width: auto;
+        height: 70px;
+        top: 0px;
+        filter: invert(70%) saturate(400%);
+        display: var(--displayLogo)
+    }
+    #search-container{
+        position: absolute;
+        left: 30%;
+        width: 30%;
+        height: 50%;
+        top: 20%;
+        display: var(--displaySearch);
+    }
+    #profile-container{
+        position: absolute;
+        height: 100%;
+        right: 30px;
+    }
+    #avatar-container{
+        position: relative;
+        aspect-ratio: 1/1;
+        top: 15%;
+        height: 70%;
+        border-radius: 100%;
+        background-color: aqua;
+    }
+    .mod-menu{
+        color: white;
+        height: 60%;
+        top: 20%;
+    }
+
+    .menu-hor-container{
+        position: absolute;
+        width: 30%;
+        height: 50%;
+        top: 20%;
+        display: var(--displayMenuHor);
+    }
+</style>

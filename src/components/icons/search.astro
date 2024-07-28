@@ -4,10 +4,12 @@ const {class: className, bg_color: bcolor} = Astro.props;
 ---
 
 <div class={className}>
-    <input class="input-search" type="search" placeholder="search"/>
-    <div class="button-search">
-        <SearchIcon bg_color={bcolor} c_color="rgb(255, 255, 255)"/>
-    </div>
+    <form action="/beranda" method="post">
+        <input class="input-search" name="search" type="search" placeholder="search"/>
+        <div class="button-search">
+            <SearchIcon bg_color={bcolor} c_color="rgb(255, 255, 255)"/>
+        </div>
+    </form>
 </div>
 
 <style define:vars={{bcolor}}>

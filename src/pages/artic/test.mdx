@@ -1,5 +1,5 @@
 ---
-layout: ../../layouts/BlogLayout.astro
+layout: ../../layouts/TestLayout.astro
 title: Astro in brief
 contentTitle: Hello There! This Is Example
 category: komputer
@@ -8,6 +8,12 @@ description: Find out what makes Astro awesome!
 timeread: 1 jam
 publish: 12 mar 2024
 ---
+
+import Hdua from '../../components/custommdx/h2.astro'
+import Hsatu from '../../components/custommdx/h1.astro'
+import Teks from '../../components/custommdx/text.astro'
+
+export const components = {h2: Hdua, h1: Hsatu, p: Teks}
 
 # Hi There !
 
