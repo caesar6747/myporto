@@ -2,6 +2,7 @@
 import Header from '../components/MainHeader.astro'
 import Preview from '../components/ContentPreview.astro'
 import Footer from '../components/MainFooter.astro'
+import Search from '../components/search.astro'
 
 import {db} from '../utils/db'
 import {eq} from 'drizzle-orm'
@@ -9,13 +10,21 @@ import {creator, content} from '../models/schema'
 
 export const prerender = false
 
-const { path, param } = Astro.params;
-const search = Astro.url.searchParams.get('search')
+const search = Astro.cookies.get("search")?.value === undefined ? "all" : Astro.cookies.get("search")?.value
+const searching = Astro.cookies.get("searching")?.value === undefined ? "disable" : Astro.cookies.get("searching")?.value
 
-const data = await db.select().from(creator).leftJoin(content, eq(creator.id, content.creatorId))
-var i = 0
+const datas = await db.select().from(creator).leftJoin(content, eq(creator.id, content.creatorId))
+
+const dataFilter = datas.filter(res => {
+    console.log(res)
+    return res.content_root.tittle.includes(search)
+})
+
+const data = searching === "enable" ? dataFilter : datas
+Astro.cookies.set("searching", "disable")
+
 console.log(search)
-
+console.log(searching)
 ---
 
 <!doctype html>
@@ -25,7 +34,22 @@ console.log(search)
         <title>beranda</title>
     </head>
     <body class="bg-gray-50 dark:bg-gray-900">
-        <Header/>
+        <script>
+            import { Modal } from 'flowbite'
+          
+            // const $buttonElement: HTMLElement | null = document.querySelector('#button');
+            // const $modalElement: HTMLElement | null = document.querySelector('#defaultModal');
+            // const modal = new Modal($modalElement);
+        
+            // if ($buttonElement) {
+            //   $buttonElement.addEventListener('click', () => modal.toggle());
+            // }
+        </script>
+        <Header>
+            <div class="w-100">
+                <Search/>
+            </div>
+        </Header>
         <div class="content">
             {data.map(res => {
                 return <div class="preview-container" onclick={"window.location.href="+"'"+res.content_root.contentLink+"'"}>

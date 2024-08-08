@@ -16,10 +16,12 @@ export default {
 				'128': '36rem',
 				'144': '40rem',
 			},
+			colors: {
+
+			},
 		},
 	},
 	plugins: [
 		require('flowbite/plugin'),
-		require('@tailwindcss/line-clamp')
 	],
 }

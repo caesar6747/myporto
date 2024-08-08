@@ -6,6 +6,7 @@ import ListLayout from '../../layouts/BoxListLayout.astro'
 import Box from '../../components/Box.astro'
 import Header from '../../components/Header.astro'
 import Banner from '../../components/Banner.astro'
+export const prerender = true
 
 export function getStaticPaths() {
   return [
@@ -16,7 +17,6 @@ export function getStaticPaths() {
 }
 
 const { porto } = Astro.params;
-
 const entry = await getEntry("portofolio", "caesar")
 const portofolio = entry.data.portofolio
 ---
