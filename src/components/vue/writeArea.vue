@@ -84,11 +84,11 @@
         //console.log("post clicked..")
         for(var i=0; i < inputs.value.length; i++){
             //const id = 'b0e80739-5e9e-49c1-8a87-2e0a0db432d9'
-            const cont_comp_id = await axios.get('http://192.168.1.102:3344/api/getcontent/'+props.contentid+'/'+i).then(async (res) => {
+            const cont_comp_id = await axios.get('http://caesarnuari.online:3344/api/getcontent/'+props.contentid+'/'+i).then(async (res) => {
                 //console.log("dari getcontent api : ", res)
                 alert(res)
                 if(res.data == ''){
-                    await axios.post('http://192.168.1.102:3344/api/postcontent', {},{
+                    await axios.post('http://caesarnuari.online:3344/api/postcontent', {},{
                         params: {
                             i: i,
                             content_id: props.contentid,
@@ -101,7 +101,7 @@
                     })
                     
                 }else{
-                    await axios.put('http://192.168.1.102:3344/api/updatecontent', {},{
+                    await axios.put('http://caesarnuari.online:3344/api/updatecontent', {},{
                         params: {
                             id: res.data,
                             i: i,
