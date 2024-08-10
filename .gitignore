@@ -6,6 +6,7 @@ dist/
 
 #file
 public/
+db/
 
 # dependencies
 node_modules/
