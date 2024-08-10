@@ -1,0 +1,45 @@
+---
+import Header from "../../../components/MainHeader.astro"
+import Footer from '../../../components/MainFooter.astro'
+import {db} from '../../../utils/db'
+import {content, content_component} from '../../../models/schema'
+import {eq} from 'drizzle-orm'
+//export const prerender = false
+
+const {creator, id} = Astro.params
+const content_root = await db.select().from(content).where(eq(content.id, id))
+//console.log(content_root[0].tittle, creator)
+const sub_content = await db.select().from(content_component).where(eq(content_component.contentId, id)).orderBy(content_component.index)
+//console.log(sub_content)
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>{content_root[0]?.tittle}</title>
+        <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+    </head>
+    <body>
+        <Header/>
+        <div class="sm:w-full sm:px-5 md:w-1/2 md:mx-auto lg:w-2/5 lg:mx-auto">
+            <p id="cat"></p>
+            <div class="content-head">
+                <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 sm:text-6xl md:text-5xl lg:text-4xl dark:text-white">{content_root[0]?.tittle ?? "kosong"}</h1>
+                <p class="description"><span><a href="/porto"></a></span> | <span></span> | <span></span></p>
+            </div>
+            <br/>
+            <div>
+                {sub_content.map(data => {
+                    if(data.tag == 2){
+                        return <h2 class="text-2xl sm:text-4xl md:text-4xl lg:text-2xl font-bold dark:text-white">{data.content}</h2> <br/>
+                    }
+                    else if(data.tag == 5){
+                        return <p class="text-base md:text-lg sm:text-3xl text-gray-900 dark:text-white">{data.content}</p> <br/>
+                    }
+                })}
+            </div>
+        </div>
+        <Footer mainClass="footer"/>
+    </body>
+</html>

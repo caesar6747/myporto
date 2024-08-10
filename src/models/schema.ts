@@ -1,4 +1,3 @@
-import { password } from 'bun';
 import { text, sqliteTable, integer } from 'drizzle-orm/sqlite-core';
 
 export const creator = sqliteTable('creator', {

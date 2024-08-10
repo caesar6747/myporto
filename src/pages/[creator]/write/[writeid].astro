@@ -1,0 +1,41 @@
+---
+import Footer from '../../../components/MainFooter.astro'
+import Header from "../../../components/MainHeader.astro"
+import InputVue from "../../../components/vue/writeArea.vue"
+
+const headerHeight = "70px"
+const {creator, writeid} = Astro.params
+console.log("ini dia : ", writeid, creator)
+---
+
+<script>
+    import { initFlowbite } from 'flowbite'
+</script>
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Write Content</title>
+        <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+    </head>
+    <body>
+        <Header/>
+        <div class="mx-auto sm:w-11/12 md:w-2/3 lg:w-3/5" id="write">
+            <InputVue contentid={writeid} client:load/>
+        </div>
+        <Footer mainClass="footer"/>
+    </body>
+</html>
+
+<style define:vars={{headerHeight}}>
+    .write{
+        position: relative;
+        top: var(--headerHeight);
+        width: 60%;
+        left: 20%;
+    }
+    .add-icon{
+        position: relative;
+        height: 100px;
+    }
+</style>
