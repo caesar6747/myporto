@@ -52,7 +52,7 @@ console.log(searching)
         </Header>
         <div class="content">
             {data.map(res => {
-                return <div class="preview-container" onclick={"window.location.href="+"'"+res.content_root.contentLink+"'"}>
+                return <div class="preview-container" onclick={"window.location.href="+"'/creator/read/"+res.content_root.id+"'"}>
                     <Preview 
                         buttonDeck="butt-deck"
                         creator_name={res.creator.name} 

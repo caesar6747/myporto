@@ -4,11 +4,10 @@ import Footer from '../../../components/MainFooter.astro'
 import {db} from '../../../utils/db'
 import {content, content_component} from '../../../models/schema'
 import {eq} from 'drizzle-orm'
-//export const prerender = false
 
 const {creator, id} = Astro.params
 const content_root = await db.select().from(content).where(eq(content.id, id))
-//console.log(content_root[0].tittle, creator)
+await db.update(content).set({view: content_root[0].view + 1}).where(eq(content.id, id))
 const sub_content = await db.select().from(content_component).where(eq(content_component.contentId, id)).orderBy(content_component.index)
 //console.log(sub_content)
 ---
