@@ -1,8 +1,7 @@
 <template>
     <br/>
-    <form class="w-full">
-        <button @click="Post()" @touchend="Post()" type="button" class="max-h-10 ms-2 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700">Posting</button>
-        <div class="w-full" id="ea" v-for="(x, i) in inputs" :key="i">
+    <form id="world" class="w-full">
+        <div class="w-full" id="ea" v-for="(x, i) in inputs" :key="x.index">
             <div class="flex">
                 <div class="w-1/4">
                     <form class="max-w-sm mx-auto">
@@ -47,17 +46,24 @@
             <br/>
         </div>
         <br/>
+        <button @click="Post()" @touchend="Post()" type="button" class="max-h-10 ms-2 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700">Posting</button>
     </form>
 </template>
 
 <script setup>
-    import {ref} from "vue"
+    import {ref, onMounted} from "vue"
     import axios from 'axios'
     
-    const props = defineProps(['contentid'])
+    const props = defineProps([
+        'contentid', 
+        'api', 
+        'datacontent'
+    ])
+
     let i = 0
     const inputs = ref([
         {
+            index: 0,
             input: `ini ke ${i}`,
             attribute: {
                 element: '',
@@ -66,10 +72,35 @@
             }
         }
     ])
+    
+    function getElement(tag){
+        if(tag < 5){
+            return "header"
+        }else if(4 < tag < 7){
+            return "text"
+        }else{
+            return "image"
+        }
+    }
+    
+    if(props.datacontent.length != 0){
+        props.datacontent.map((res, index) => {
+            inputs.value[index] = {
+                index: index,
+                input: res.content,
+                attribute: {
+                    element: getElement(res.tag),
+                    tag: res.tag,
+                    style: res.style
+                }
+            }
+        })
+    }
 
     async function addField(index){
         i++
         inputs.value.splice(index+1, 0, {
+            index: index,
             input: `ini ke ${i}`,
             attribute: {
                 element: '',
@@ -77,18 +108,15 @@
                 style: ''
             }
         })
-        //console.log("add clicked ...")
     }
 
     async function Post(){
-        //console.log("post clicked..")
         for(var i=0; i < inputs.value.length; i++){
-            //const id = 'b0e80739-5e9e-49c1-8a87-2e0a0db432d9'
-            const cont_comp_id = await axios.get('http://192.168.1.102:3344/api/getcontent/'+props.contentid+'/'+i).then(async (res) => {
-                //console.log("dari getcontent api : ", res)
-                alert(res)
+            console.log(props.api)
+            console.log(props.contentid)
+            await axios.get(props.api + '/api/getcontent/'+props.contentid+'/'+i).then(async (res) => {
                 if(res.data == ''){
-                    await axios.post('http://192.168.1.102:3344/api/postcontent', {},{
+                    await axios.post(props.api+'/api/postcontent', {},{
                         params: {
                             i: i,
                             content_id: props.contentid,
@@ -101,7 +129,7 @@
                     })
                     
                 }else{
-                    await axios.put('http://192.168.1.102:3344/api/updatecontent', {},{
+                    await axios.put(props.api + '/api/updatecontent', {},{
                         params: {
                             id: res.data,
                             i: i,
@@ -115,10 +143,12 @@
                     })
                 }
             })
-            //console.log("content component id : ", cont_comp_id)
-            window.location = '/creator/read/'+props.contentid
         }
+        window.location = '/creator/read/'+props.contentid
     }
+    onMounted( () => {
+        console.log("dsfadsa")
+    })
 </script>
 
 <style>

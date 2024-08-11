@@ -83,8 +83,8 @@ func GetIndexContentComponent(db *sql.DB, id string, index string, data *string)
 
 func PostData(db *sql.DB, data ContentComponent, ctx context.Context) error {
 	array := []string{data.id, data.content, data.contentId, data.style, data.index, data.tag}
-	value := "'" + strings.Join(array[:], "', '") + "'"
-	SQL := "INSERT INTO content_component (id, content, content_id, style, 'index', tag) VALUES (" + value + ")"
+	value := `"` + strings.Join(array[:], `", "`) + `"`
+	SQL := `INSERT INTO content_component (id, content, content_id, style, 'index', tag) VALUES (` + value + `)`
 	//fmt.Println(SQL)
 	_, err := db.ExecContext(ctx, SQL)
 	checkErr(err)
