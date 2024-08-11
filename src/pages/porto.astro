@@ -1,29 +1,56 @@
 ---
-import {getEntry} from 'astro:content'
 import '../components/Purecss.scss'
 import Layout from '../layouts/LayoutPorto.astro'
 import ListLayout from '../layouts/BoxListLayout.astro'
 import Box from '../components/Box.astro'
 import Header from '../components/Header.astro'
 import Banner from '../components/Banner.astro'
+import Cube from '../components/webGL/banner/Decoration.astro'
 
 const data = {
     name: "caesar",
-    identity: "hsadfasd",
-    project_image: "sadfsadfsa",
-    project_name: "sadfads",
-    description: "sadfasdfsa"
+    identity: "heaa",
+    project_image: "/web-content.jpg",
+    project_name: "Web Content Driven",
+    description: "web ini adalah project mandiri yang bertujuan untuk menampung ide, kreatifitas, dan informasi yang disajikan dalam bentuk kontent web"
 }
 
-const portofolio = [data, data, data]
+const data2 = {
+    name: "caesar",
+    identity: "heaa",
+    project_image: "/pe2.jpg",
+    project_name: "Production Enterprise V2.0",
+    description: "PE2 adalah web aplikasi untuk manajemen produksi dan penyimpanan bahan dan bahan baku vaksin yang dioperasikan di biofarma"
+}
+
+const portofolio = [data, data2, data, data2, data]
 ---
 
 <Layout>
     <Header/>
-    <Banner
-        name={data.name}
-        identity={data.identity}
-    />
+    <div class="w-full h-1/3 relative bg-slate-500">
+        <Cube/>
+        <h1 class="absolute sm:bottom-96 lg:bottom-80 sm:left-6 lg:left-20 sm:text-2md md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-blue-700 dark:from-zinc-900 to-green-400 dark:to-gray-100">Hi I'm Caesar Nuari</h1>
+        <p class="absolute sm:bottom-96 lg:bottom-80 sm:left-6 lg:left-20 sm:text-lg md:text-2lg font-bold bg-clip-text text-transparent bg-gradient-to-br from-blue-700 dark:from-zinc-900 to-green-400 dark:to-gray-100">I'm a web developer</p>
+        <h2 class="absolute sm:bottom-80 lg:bottom-64 sm:left-6 lg:left-20 sm:text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-blue-700 dark:from-zinc-900 to-green-400 dark:to-gray-100">Welcome to my portofolio Web pages</h2>
+    </div>
+    <div class="relative sm:w-full md:w-2/3 lg:w-1/2 mx-auto sm:left-3 md:left-0 mt-10 mb-6">
+        <h2 class="relative w-48 sm:text-2xl lg:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-blue-700 dark:from-zinc-900 to-green-400 dark:to-gray-100">Portofolio</h2>
+    </div>
+    <div class="flex w-full">
+        <div class="sm:w-full sm:overflow-x-scroll md:overflow-x-hidden md:w-2/3 lg:w-1/2 mx-auto mx-1/4 sm:flex md:grid md:gap-4 md:grid-cols-3">
+            {portofolio.map(data =>{
+                console.log(data)
+                return(
+                    <Box
+                        image_url={data.project_image}
+                        content_title={data.project_name}
+                        content_describe={data.description}
+                    />
+                )
+            })}
+        </div>
+    </div>
     <ListLayout title={"sdafsad"}>
         {portofolio.map(data =>{
             console.log(data)
