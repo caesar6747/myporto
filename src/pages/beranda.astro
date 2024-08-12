@@ -23,6 +23,8 @@ const dataFilter = datas.filter(res => {
 const data = searching === "enable" ? dataFilter : datas
 Astro.cookies.set("searching", "disable")
 
+const indexads = Math.floor(Math.random() * (data.length - 1)) + 1
+var currentindex = 0
 console.log(search)
 console.log(searching)
 ---
@@ -36,14 +38,6 @@ console.log(searching)
     <body class="bg-gray-50 dark:bg-gray-900">
         <script>
             import { Modal } from 'flowbite'
-          
-            // const $buttonElement: HTMLElement | null = document.querySelector('#button');
-            // const $modalElement: HTMLElement | null = document.querySelector('#defaultModal');
-            // const modal = new Modal($modalElement);
-        
-            // if ($buttonElement) {
-            //   $buttonElement.addEventListener('click', () => modal.toggle());
-            // }
         </script>
         <Header>
             <div class="w-100">
@@ -52,32 +46,51 @@ console.log(searching)
         </Header>
         <div class="content">
             {data.map(res => {
-                return <div class="preview-container" onclick={"window.location.href="+"'/creator/read/"+res.content_root.id+"'"}>
-                    <Preview 
-                        buttonDeck="butt-deck"
-                        creator_name={res.creator.name} 
-                        creator_img={res.creator.image} 
-                        tittle={res.content_root.tittle} 
-                        content_img={res.content_root.previewImg}
-                        posted={res.content_root.posted}
-                        like={res.content_root.like}
-                        view={res.content_root.view}
-                        prev_desc={res.content_root.previewDesc}
-                    />
-                </div>
+                if(currentindex == indexads){
+                    currentindex++
+                    return <div id="container-8f5553acd7adfb8f134758579134c77a" class="preview-container flex justify-center">
+                        <script type="text/javascript">
+                            atOptions = {
+                                'key' : '8f5553acd7adfb8f134758579134c77a',
+                                'format' : 'iframe',
+                                'height' : 60,
+                                'width' : 468,
+                                'params' : {}
+                            };
+                        </script>
+                        <script type="text/javascript" src="//www.topcreativeformat.com/8f5553acd7adfb8f134758579134c77a/invoke.js"></script>
+                    </div>
+                    <br/>
+                    <div class="preview-container" onclick={"window.location.href="+"'/creator/read/"+res.content_root.id+"'"}>
+                        <Preview 
+                            buttonDeck="butt-deck"
+                            creator_name={res.creator.name} 
+                            creator_img={res.creator.image} 
+                            tittle={res.content_root.tittle} 
+                            content_img={res.content_root.previewImg}
+                            posted={res.content_root.posted}
+                            like={res.content_root.like}
+                            view={res.content_root.view}
+                            prev_desc={res.content_root.previewDesc}
+                        />
+                    </div>
+                }else{
+                    currentindex++
+                    return <div class="preview-container" onclick={"window.location.href="+"'/creator/read/"+res.content_root.id+"'"}>
+                        <Preview 
+                            buttonDeck="butt-deck"
+                            creator_name={res.creator.name} 
+                            creator_img={res.creator.image} 
+                            tittle={res.content_root.tittle} 
+                            content_img={res.content_root.previewImg}
+                            posted={res.content_root.posted}
+                            like={res.content_root.like}
+                            view={res.content_root.view}
+                            prev_desc={res.content_root.previewDesc}
+                        />
+                    </div>
+                }
             })}
-        </div>
-        <div id="ad-container">
-            <script type="text/javascript" is:inline>
-                atOptions = {
-                    'key' : '8f5553acd7adfb8f134758579134c77a',
-                    'format' : 'iframe',
-                    'height' : 60,
-                    'width' : 468,
-                    'params' : {}
-                };
-            </script>
-            <script type="text/javascript" src="//www.topcreativeformat.com/8f5553acd7adfb8f134758579134c77a/invoke.js" is:inline></script>
         </div>
         <Footer mainClass="footer"/>
     </body>
