@@ -2,13 +2,15 @@
 import Header from "../../../components/MainHeader.astro"
 import Footer from '../../../components/MainFooter.astro'
 import {db} from '../../../utils/db'
-import {content, content_component} from '../../../models/schema'
+import {content, content_component, creator} from '../../../models/schema'
 import {eq} from 'drizzle-orm'
 
-const {creator, id} = Astro.params
+const {creatorname, id} = Astro.params
 const content_root = await db.select().from(content).where(eq(content.id, id))
+const creator_id = content_root[0].creatorId
 await db.update(content).set({view: content_root[0].view + 1}).where(eq(content.id, id))
 const sub_content = await db.select().from(content_component).where(eq(content_component.contentId, id)).orderBy(content_component.index)
+const creatordesc = await db.select().from(creator).where(eq(creator.id, content_root[0].creatorId))
 //console.log(sub_content)
 ---
 
@@ -25,7 +27,7 @@ const sub_content = await db.select().from(content_component).where(eq(content_c
             <p id="cat"></p>
             <div class="content-head">
                 <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 sm:text-6xl md:text-5xl lg:text-4xl dark:text-white">{content_root[0]?.tittle ?? "kosong"}</h1>
-                <p class="description"><span><a href="/porto"></a></span> | <span></span> | <span></span></p>
+                <p class="description"><span><a href="/porto">{creatordesc[0]?.name}</a></span> | <span>{content_root[0]?.posted}</span> | <span></span></p>
             </div>
             <br/>
             <div>
