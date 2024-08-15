@@ -1,204 +1,133 @@
 package main
 
 import (
-	"context"
 	"database/sql"
 	"encoding/json"
-	"fmt"
+	"myporto/server"
+	"myporto/server/models"
 	"net/http"
-	"strings"
 
 	"github.com/google/uuid"
 	"github.com/julienschmidt/httprouter"
 	_ "github.com/mattn/go-sqlite3"
 )
 
-type ContentComponent struct {
-	id        string
-	index     string
-	content   string
-	tag       string
-	contentId string
-	style     string
-}
-
-type ContentComponentReq struct {
-	id         string
-	i          string
-	content    string
-	tag        string
-	content_id string
-	style      string
-}
-
-type Content struct {
-	id          string
-	tittle      string
-	previewImg  string
-	previewDesc string
-	creatorId   string
-	posted      string
-	updated     string
-	view        int
-	like        int
-	contentLink string
-}
-
-type Respon struct {
-	Code int
-	err  error
-}
-
-func checkErr(err error) {
-	if err != nil {
-		fmt.Println(err)
-	}
-}
-
-func SetHeader(w http.ResponseWriter) {
-	w.Header().Add("Access-Control-Allow-Origin", "*")
-	w.Header().Add("Access-Control-Allow-Headers", "content-type")
-	w.Header().Add("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT")
-	w.Header().Add("Content-Type", "application/json")
-}
-
-func GetData(db *sql.DB) {
-	rows, err := db.Query("SELECT id, content FROM content_component")
-	checkErr(err)
-
-	for rows.Next() {
-		data := ContentComponent{}
-		err := rows.Scan(&data.id, &data.content)
-		checkErr(err)
-		//fmt.Println(data)
-	}
-}
-
-func GetIndexContentComponent(db *sql.DB, id string, index string, data *string) {
-	SQL := `SELECT id FROM content_component WHERE content_id = '` + id + `' AND "index" = ` + index + ``
-	//fmt.Println(SQL)
-	rows := db.QueryRow(SQL)
-	rows.Scan(data)
-}
-
-func PostData(db *sql.DB, data ContentComponent, ctx context.Context) error {
-	array := []string{data.id, data.content, data.contentId, data.style, data.index, data.tag}
-	value := `"` + strings.Join(array[:], `", "`) + `"`
-	SQL := `INSERT INTO content_component (id, content, content_id, style, 'index', tag) VALUES (` + value + `)`
-	//fmt.Println(SQL)
-	_, err := db.ExecContext(ctx, SQL)
-	checkErr(err)
-	//fmt.Println("point debug")
-	return err
-}
-
-func SimplePost(db *sql.DB, ctx context.Context) {
-	SQL := "INSERT INTO content_component (id, index) VALUES ('sfguasdyfweh', 1)"
-	_, err := db.ExecContext(ctx, SQL)
-	checkErr(err)
-}
-
-func UpdateContentComponent(db *sql.DB, ctx context.Context, data ContentComponent) error {
-	array := []string{" content='", data.content, "', ", "tag=", data.tag, ", ", "style='", data.style, "'"}
-	value := strings.Join(array[:], "")
-	SQL := "UPDATE content_component SET " + value + " WHERE id = '" + data.id + "'"
-	//fmt.Println(SQL)
-	_, err := db.ExecContext(ctx, SQL)
-	checkErr(err)
-	return err
-}
-
 func main() {
 	router := httprouter.New()
 	// Connect to database
 	db, err := sql.Open("sqlite3", "./db.sqlite3")
-	checkErr(err)
+	server.CheckErr(err)
 	//GetData(db)
 
-	router.OPTIONS("/api/postcontent", func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-		SetHeader(w)
-		respon := Respon{
+	router.OPTIONS("/api/deletesubcontent", func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+		server.SetHeader(w)
+		w.WriteHeader(http.StatusOK)
+		respon := models.Respon{
 			Code: 200,
 		}
 		encode := json.NewEncoder(w)
 		err := encode.Encode(respon)
-		checkErr(err)
+		server.CheckErr(err)
+	})
+
+	router.OPTIONS("/api/postcontent", func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+		server.SetHeader(w)
+		respon := models.Respon{
+			Code: 200,
+		}
+		encode := json.NewEncoder(w)
+		err := encode.Encode(respon)
+		server.CheckErr(err)
 	})
 
 	router.OPTIONS("/api/updatecontent", func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-		SetHeader(w)
-		respon := Respon{
+		server.SetHeader(w)
+		respon := models.Respon{
 			Code: 200,
 		}
 		encode := json.NewEncoder(w)
 		err := encode.Encode(respon)
-		checkErr(err)
+		server.CheckErr(err)
 	})
 
 	router.GET("/api/getcontent/:id/:i", func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-		SetHeader(w)
+		server.SetHeader(w)
 		var data string
-		GetIndexContentComponent(db, params.ByName("id"), params.ByName("i"), &data)
+		server.GetIndexContentComponent(db, params.ByName("id"), params.ByName("i"), &data)
 		//fmt.Println(data)
 		w.Write([]byte(data))
 	})
 
 	router.POST("/api/postcontent", func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-		SetHeader(w)
+		server.SetHeader(w)
 
 		//start := time.Now()
-		data := ContentComponent{
-			id:        uuid.New().String(),
-			index:     r.URL.Query().Get("i"),
-			content:   r.URL.Query().Get("content"),
-			tag:       r.URL.Query().Get("tag"),
-			contentId: r.URL.Query().Get("content_id"),
-			style:     r.URL.Query().Get("style"),
+		data := models.ContentComponent{
+			Id:        uuid.New().String(),
+			Index:     r.URL.Query().Get("i"),
+			Content:   r.URL.Query().Get("content"),
+			Tag:       r.URL.Query().Get("tag"),
+			ContentId: r.URL.Query().Get("content_id"),
+			Style:     r.URL.Query().Get("style"),
 		}
 		//end := time.Now()
 		//elapse := end.Sub(start)
 		//fmt.Println("param time execution : ", elapse)
 
 		//start2 := time.Now()
-		var p ContentComponentReq
+		var p models.ContentComponentReq
 		err := json.NewDecoder(r.Body).Decode(&p)
 		//end2 := time.Now()
 		//elapse2 := end2.Sub(start2)
 		//fmt.Println("json time execution : ", elapse2)
 
-		checkErr(err)
+		server.CheckErr(err)
 		//fmt.Println(r.Body, p.content)
 
-		posterr := PostData(db, data, r.Context())
-		respon := Respon{
+		posterr := server.PostData(db, data, r.Context())
+		respon := models.Respon{
 			Code: 200,
-			err:  posterr,
+			Err:  posterr,
 		}
 
 		encode := json.NewEncoder(w)
 		errr := encode.Encode(respon)
-		checkErr(errr)
+		server.CheckErr(errr)
 	})
 
 	router.PUT("/api/updatecontent", func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-		SetHeader(w)
-		data := ContentComponent{
-			id:        r.URL.Query().Get("id"),
-			index:     r.URL.Query().Get("i"),
-			content:   r.URL.Query().Get("content"),
-			tag:       r.URL.Query().Get("tag"),
-			contentId: r.URL.Query().Get("content_id"),
-			style:     r.URL.Query().Get("style"),
+		server.SetHeader(w)
+		data := models.ContentComponent{
+			Id:        r.URL.Query().Get("id"),
+			Index:     r.URL.Query().Get("i"),
+			Content:   r.URL.Query().Get("content"),
+			Tag:       r.URL.Query().Get("tag"),
+			ContentId: r.URL.Query().Get("content_id"),
+			Style:     r.URL.Query().Get("style"),
 		}
-		err := UpdateContentComponent(db, r.Context(), data)
-		respon := Respon{
+		err := server.UpdateContentComponent(db, r.Context(), data)
+		respon := models.Respon{
 			Code: 200,
-			err:  err,
+			Err:  err,
 		}
 
 		encode := json.NewEncoder(w)
 		errr := encode.Encode(respon)
-		checkErr(errr)
+		server.CheckErr(errr)
+	})
+
+	router.DELETE("/api/deletesubcontent", func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+		server.SetHeader(w)
+		err := server.DeleteSubContentRange(db, r.Context(), r.URL.Query().Get("index"), r.URL.Query().Get("contentid"))
+
+		respon := models.Respon{
+			Code: 200,
+			Err:  err,
+		}
+
+		encode := json.NewEncoder(w)
+		errr := encode.Encode(respon)
+		server.CheckErr(errr)
 	})
 	// defer close
 	defer db.Close()

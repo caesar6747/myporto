@@ -1,4 +1,4 @@
-module my-porto
+module myporto
 
 go 1.22.4
 
