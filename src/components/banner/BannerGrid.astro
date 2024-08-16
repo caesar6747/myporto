@@ -1,0 +1,106 @@
+---
+var data = [[0, 0, 0]]
+let index = 0
+var gradienty = 0
+for(var i = 0; i <50; i++){
+    var gradientx = 0
+    for(var j =0; j <128; j++){
+        data[index] = [gradientx, gradienty, 50]
+        gradientx += 3
+        index++
+    }
+    gradientx = 0
+    gradienty += 3
+}
+index = -1
+---
+<div class="grid col-template gap-px">
+    {    data.map(item => {
+        index++
+        return <div id={index.toString()} class="w-full aspect-square hover:bg-gray-700" style={"background-color: rgb("+item.join(",")+")"}>
+
+        </div>
+    })}
+</div>
+<button type="button" onclick="animates()" class="absolute max-h-7 my-1 text-white bg-purple-500 hover:bg-purple-300 font-medium rounded-lg text-sm px-5 py-1 dark:bg-purple-300 dark:hover:bg-purple-200">change</button>
+<div class="">
+    <slot/>
+</div>
+
+<script is:inline>
+    var data = [0, 0, 0]
+    var arrImage = []
+    var numimg = 0
+
+    const img = new Image();
+    const img2 = new Image();
+    img.crossOrigin = "*"
+    img.src = 'https://th.bing.com/th/id/OIP.zVhzq8tMP9G71Se7BQlragHaHa?rs=1&pid=ImgDetMain';
+    img.onload = function() {
+        arrImage[0] = imageToRGBArray(img);
+        console.log(arrImage);
+    }
+    img2.crossOrigin = "*"
+    img2.src = 'https://th.bing.com/th/id/OIP.EpuQ97Ub822lpcTspIr5RAAAAA?rs=1&pid=ImgDetMain'
+    img2.onload = function() {
+        arrImage[1] = imageToRGBArray(img2);
+        console.log(arrImage);
+    }
+
+    function klik(){
+        console.log("cliked ...")
+    }
+    function animates(){
+        var index = 0
+        if(numimg == 0){
+            numimg =1
+        }else{
+            numimg = 0
+        }
+        for(var a = 0; a <6400; a++){
+            setTimeout(doing => {
+                data[0] = arrImage[numimg][index][0]
+                data[1] = arrImage[numimg][index][1]
+                data[2] = arrImage[numimg][index][2]
+                document.getElementById(index.toString()).style.backgroundColor = "rgb(" + data.join(",") + ")"
+                index++
+            }, 1 * a)
+        }
+    }
+    function imageToRGBArray(image) {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Atur ukuran canvas sesuai dengan ukuran gambar
+        canvas.width = 128;
+        canvas.height = 50;
+        
+        // Gambar gambar ke canvas
+        ctx.drawImage(image, 0, 0, 128, 50);
+        
+        // Ambil data piksel dari canvas
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imageData.data;
+        
+        // Buat array untuk menyimpan nilai RGB
+        const rgbArray = [];
+        
+        // Iterasi melalui setiap piksel
+        for (let i = 0; i < data.length; i += 4) {
+            const r = data[i];     // Nilai Red
+            const g = data[i + 1]; // Nilai Green
+            const b = data[i + 2]; // Nilai Blue
+            // Abaikan data[i + 3] karena itu adalah nilai Alpha
+
+            rgbArray.push([r, g, b]);
+        }
+        
+        return rgbArray;
+    }
+</script>
+
+<style>
+    .col-template{
+        grid-template-columns: repeat(128, auto);
+    }
+</style>

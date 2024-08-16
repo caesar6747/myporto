@@ -1,6 +1,7 @@
 import { defineMiddleware } from "astro:middleware"
-import { db, Account, Session, isDbError } from 'astro:db';
-import { eq, gt, count, sql } from 'astro:db';
+import { db } from "./utils/db"
+import { Account, Session } from "./models/schema"
+import { eq } from "drizzle-orm"
 import moment from "moment"
 import { PUBLIC_URL, makeToken} from "./constant"
 
