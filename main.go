@@ -19,6 +19,8 @@ func main() {
 	server.CheckErr(err)
 	//GetData(db)
 
+	router.OPTIONS("/api/upload-image", server.HandleOption)
+
 	router.OPTIONS("/api/deletesubcontent", func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 		server.SetHeader(w)
 		w.WriteHeader(http.StatusOK)
@@ -129,6 +131,13 @@ func main() {
 		errr := encode.Encode(respon)
 		server.CheckErr(errr)
 	})
+
+	router.POST("/api/upload-image", func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+		server.SetHeader(w)
+		server.UploadHandler(w, r)
+		w.Write([]byte{http.StatusOK})
+	})
+
 	// defer close
 	defer db.Close()
 

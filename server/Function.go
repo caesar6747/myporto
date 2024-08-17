@@ -3,10 +3,13 @@ package server
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"myporto/server/models"
 	"net/http"
 	"strings"
+
+	"github.com/julienschmidt/httprouter"
 )
 
 type ServerInit interface {
@@ -17,6 +20,17 @@ func CheckErr(err error) {
 	if err != nil {
 		fmt.Println(err)
 	}
+}
+
+func HandleOption(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	SetHeader(w)
+	w.WriteHeader(http.StatusOK)
+	respon := models.Respon{
+		Code: 200,
+	}
+	encode := json.NewEncoder(w)
+	err := encode.Encode(respon)
+	CheckErr(err)
 }
 
 func SetHeader(w http.ResponseWriter) {
