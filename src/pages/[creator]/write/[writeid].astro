@@ -29,7 +29,7 @@ const data = await db.select().from(content_component).where(eq(content_componen
         <div class="mx-auto sm:w-11/12 md:w-2/3 lg:w-3/5">
             <InputVue contentid={writeid} api={await api} datacontent={data} client:only="vue"/>
         </div>
-        <Footer mainClass="footer"/>
+        <Footer/>
     </body>
 </html>
 
