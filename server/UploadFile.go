@@ -28,7 +28,13 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error retrieving the file", http.StatusBadRequest)
 		return
 	}
+	file2, handler2, err := r.FormFile("image")
+	if err != nil {
+		http.Error(w, "Error retrieving the file", http.StatusBadRequest)
+		return
+	}
 	defer file.Close()
+	defer file2.Close()
 
 	// Tentukan path untuk menyimpan file
 	dst, err := os.Create(filepath.Join("./public", handler.Filename))
@@ -36,7 +42,7 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Unable to create the file", http.StatusInternalServerError)
 		return
 	}
-	dst2, err := os.Create(filepath.Join("./dist/client", handler.Filename))
+	dst2, err := os.Create(filepath.Join("./dist/client", handler2.Filename))
 	if err != nil {
 		http.Error(w, "Unable to create the file", http.StatusInternalServerError)
 		return
@@ -49,11 +55,11 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Unable to save the file", http.StatusInternalServerError)
 		return
 	}
-	if _, err := io.Copy(dst2, file); err != nil {
+	if _, err := io.Copy(dst2, file2); err != nil {
 		http.Error(w, "Unable to save the file", http.StatusInternalServerError)
 		return
 	}
 
 	// Berikan respon sukses
-	fmt.Fprintf(w, "File uploaded successfully: %s", handler.Filename)
+	fmt.Println(w, "File uploaded successfully: %s, %s", handler.Filename, handler2.Filename)
 }

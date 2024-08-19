@@ -42,20 +42,15 @@
             <div class="flex mt-1 w-full">
                 <textarea v-if="x.attribute.element == 'text' || x.attribute.element == 'header'"v-model="x.input" name="input" class="w-11/12 block p-2.5 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                 <div v-if="x.attribute.element == 'image' && x.attribute.tag == '8'" class="flex items-center justify-center w-full">
-                    <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                    <label for="dropzone-file" @click="triggerInput(i)" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                         <div class="flex flex-col items-center justify-center pt-5 pb-6">
                             <img :src="x.imagePreview ? x.imagePreview : x.input ? '/'+x.input : uploadIcon" width="50" height="20"/>
                             <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
                             <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
                         </div>
-                        <input id="dropzone-file" type="file" class="hidden" @change="event => {
-                            x.image = event.target.files[0]
-                            x.input = event.target.files[0].name
-                            const reader = new FileReader()
-                            reader.onload(e => {
-                                x.imagePreview = e.target.result
-                            })
-                            reader.readAsDataURL(x.image)
+                        <input :id="'file_input_'+i" type="file" class="hidden" @change="event => {
+                            ArrangeImageIndex()
+                            FileOnChange(i, event.target.files[0])
                         }"/>
                     </label>
                 </div>
@@ -91,7 +86,8 @@
             attribute: {
                 element: '',
                 tag: '',
-                style: ''
+                style: '',
+                imageIndex: ''
             }
         }
     ])
@@ -117,7 +113,8 @@
                 attribute: {
                     element: getElement(res.tag),
                     tag: res.tag,
-                    style: res.style
+                    style: res.style,
+                    imageIndex: ''
                 }
             }
         })
@@ -133,19 +130,18 @@
             attribute: {
                 element: '',
                 tag: '',
-                style: ''
+                style: '',
+                imageIndex: ''
             }
         })
     }
 
     async function Post(){
         for(var i=0; i < inputs.value.length; i++){
-            //console.log(inputs.value[i].input.name)
             await axios.get(props.api + '/api/getcontent/'+props.contentid+'/'+i).then(async (res) => {
                 if(res.data == ''){
                     if(inputs.value[i].attribute.tag == '8'){
                         await Upload(i)
-                        //inputs.value[i].input = inputs.value[i].input.name
                     }
                     await axios.post(props.api+'/api/postcontent', {},{
                         params: {
@@ -159,7 +155,6 @@
                 }else{
                     if(inputs.value[i].attribute.tag == '8'){
                         await Upload(i)
-                        //inputs.value[i].input = inputs.value[i].input.name
                     }
                     await axios.put(props.api + '/api/updatecontent', {},{
                         params: {
@@ -188,11 +183,40 @@
     }
 
     async function Upload(index){
-        const fd = new FormData()
-        fd.append('image', inputs.value[index].image, inputs.value[index].image.name)
-        await axios.post(props.api+'/api/upload-image', fd).then(res => {
-            console.log(res)
+        if(inputs.value[index].image){
+            const fd = new FormData()
+            fd.append('image', inputs.value[index].image, inputs.value[index].image.name)
+            await axios.post(props.api+'/api/upload-image', fd).then(res => {
+                console.log(res)
+            })
+        }
+    }
+
+    function FileOnChange(index, file){
+        inputs.value[index].image = file;
+        inputs.value[index].input = file.name;
+        const reader = new FileReader();
+        reader.onload = e => {
+            inputs.value[index].imagePreview = e.target.result;
+        }
+        reader.readAsDataURL(inputs.value[index].image);
+    }
+
+    function ArrangeImageIndex(){
+        var imageIndex = 0
+        inputs.value.map(item => {
+            if(item.attribute.element == 'image'){
+                item.attribute.imageIndex = imageIndex
+                imageIndex++
+            }else{
+                item.attribute.imageIndex = ''
+            }
         })
+    }
+
+    function triggerInput(index){
+        const inp = document.getElementById('file_input_'+index)
+        inp.click()
     }
 
     async function Delete(i){
