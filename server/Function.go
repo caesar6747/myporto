@@ -87,3 +87,29 @@ func DeleteSubContentRange(db *sql.DB, ctx context.Context, start string, conten
 
 	return err
 }
+
+// post new content root
+func PostNewContent(db *sql.DB, ctx context.Context, content models.Content) error {
+	array := []string{content.Id, content.Tittle, content.PreviewImg, content.PreviewDesc, content.CreatorId, content.Posted, content.Updated, "0", "0", content.ContentLink}
+	value := "'" + strings.Join(array[:], "','") + "'"
+	SQL := `INSERT INTO content_root 
+	(id, tittle, preview_image, preview_description, creator_id, posted, updated, view, like, content_link)
+	VALUES
+	(` + value + `)`
+	_, err := db.ExecContext(ctx, SQL)
+	return err
+}
+
+func UpdateContentTittle(db *sql.DB, ctx context.Context, newTittle string, contentId string) error {
+	SQL := "UPDATE content_root SET tittle='" + newTittle + "' WHERE id='" + contentId + "'"
+	_, err := db.ExecContext(ctx, SQL)
+	CheckErr(err)
+	return err
+}
+
+func DeleteContent(db *sql.DB, ctx context.Context, contentId string) error {
+	SQL := "DELETE FROM content_root WHERE id='" + contentId + "'"
+	_, err := db.ExecContext(ctx, SQL)
+	CheckErr(err)
+	return err
+}

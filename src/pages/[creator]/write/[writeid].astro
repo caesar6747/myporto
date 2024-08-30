@@ -3,7 +3,7 @@ import Footer from '../../../components/MainFooter.astro'
 import Header from "../../../components/MainHeader.astro"
 import InputVue from "../../../components/vue/writeArea.vue"
 import {db} from '../../../utils/db'
-import { content_component } from '../../../models/schema'
+import { content, content_component } from '../../../models/schema'
 import {eq} from 'drizzle-orm'
 
 const headerHeight = "70px"
@@ -12,6 +12,7 @@ const {creator, writeid} = Astro.params
 const api = import.meta.env.GO_API
 
 const data = await db.select().from(content_component).where(eq(content_component.contentId, writeid))
+const dataContent = await db.select().from(content).where(eq(content.id, writeid))
 ---
 
 <script>
@@ -27,7 +28,7 @@ const data = await db.select().from(content_component).where(eq(content_componen
     <body>
         <Header/>
         <div class="mx-auto sm:w-11/12 md:w-2/3 lg:w-3/5">
-            <InputVue contentid={writeid} api={await api} datacontent={data} client:only="vue"/>
+            <InputVue contentid={writeid} api={await api} datacontent={data} content={dataContent[0]} client:only="vue"/>
         </div>
         <Footer/>
     </body>

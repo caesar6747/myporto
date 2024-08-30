@@ -1,6 +1,9 @@
 <template>
     <br/>
     <form id="world" class="w-full">
+        <div>
+            <input v-model="tittle" type="text"/>
+        </div>
         <div class="w-full" id="ea" v-for="(x, i) in inputs" :key="x.index">
             <div class="flex">
                 <div class="w-1/4">
@@ -71,12 +74,15 @@
     const props = defineProps([
         'contentid', 
         'api', 
-        'datacontent'
+        'datacontent',
+        'content'
     ])
 
     const uploadIcon = ref('https://cdn3.iconfinder.com/data/icons/cloudcon-colored/512/upload-512.png')
 
     let i = 0
+    const tittle = ref()
+    tittle.value = props.content.tittle
     const inputs = ref([
         {
             index: 0,
@@ -137,6 +143,12 @@
     }
 
     async function Post(){
+        await axios.post(props.api + '/api/updatecontenttittle', {},{
+            params: {
+                tittle: tittle.value,
+                contentid: props.content.id
+            }
+        })
         for(var i=0; i < inputs.value.length; i++){
             await axios.get(props.api + '/api/getcontent/'+props.contentid+'/'+i).then(async (res) => {
                 if(res.data == ''){

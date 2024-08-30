@@ -1,10 +1,24 @@
 ---
 import Button from './button/button_default.astro'
+import ButtonDelete from './button/button_delete_content.astro'
 import { db } from '../utils/db'
 import {content} from '../models/schema'
 import {eq} from 'drizzle-orm'
 const {creatorid} = Astro.props
 const data = await db.select().from(content).where(eq(content.creatorId, creatorid))
+
+const api = import.meta.env.GO_API
+
+async function Delete(data){
+        console.log('delete is clicked')
+        const urlParams = new URLSearchParams({
+            creatorid: data
+        }).toString()
+        await fetch(api + '/api/deletecontent?'+ urlParams, {
+            method: 'DELETE',
+            mode: 'cors'
+        })
+    }
 ---
 
 <div>
@@ -17,7 +31,7 @@ const data = await db.select().from(content).where(eq(content.creatorId, creator
                 </div>
                 <Button text="read" click={"window.location.href ='/creator/read/"+res.id+"'"}/>
                 <Button text="edit" click={"window.location.href ='/creator/write/"+res.id+"'"}/>
-                <Button text="delete"/>
+                <ButtonDelete text="delete" api={api} id={res.id}/>
             </div>
             <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
         </div>

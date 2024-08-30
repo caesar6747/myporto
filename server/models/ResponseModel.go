@@ -13,3 +13,8 @@ type Respon struct {
 	Code int
 	Err  error
 }
+
+type ResponData struct {
+	Code int
+	Data any
+}

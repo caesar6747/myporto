@@ -3,9 +3,11 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"myporto/server"
 	"myporto/server/models"
 	"net/http"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/julienschmidt/httprouter"
@@ -52,18 +54,28 @@ func main() {
 		server.CheckErr(err)
 	})
 
+	router.OPTIONS("/api/addnewcontent", func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+		server.HandleOption(w, r, params)
+	})
+
+	router.OPTIONS("/api/updatecontenttittle", func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+		server.HandleOption(w, r, params)
+	})
+
+	router.OPTIONS("/api/deletecontent", func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+		server.HandleOption(w, r, params)
+	})
+
 	router.GET("/api/getcontent/:id/:i", func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 		server.SetHeader(w)
 		var data string
 		server.GetIndexContentComponent(db, params.ByName("id"), params.ByName("i"), &data)
-		//fmt.Println(data)
 		w.Write([]byte(data))
 	})
 
 	router.POST("/api/postcontent", func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 		server.SetHeader(w)
 
-		//start := time.Now()
 		data := models.ContentComponent{
 			Id:        uuid.New().String(),
 			Index:     r.URL.Query().Get("i"),
@@ -72,19 +84,10 @@ func main() {
 			ContentId: r.URL.Query().Get("content_id"),
 			Style:     r.URL.Query().Get("style"),
 		}
-		//end := time.Now()
-		//elapse := end.Sub(start)
-		//fmt.Println("param time execution : ", elapse)
-
-		//start2 := time.Now()
 		var p models.ContentComponentReq
 		err := json.NewDecoder(r.Body).Decode(&p)
-		//end2 := time.Now()
-		//elapse2 := end2.Sub(start2)
-		//fmt.Println("json time execution : ", elapse2)
 
 		server.CheckErr(err)
-		//fmt.Println(r.Body, p.content)
 
 		posterr := server.PostData(db, data, r.Context())
 		respon := models.Respon{
@@ -136,6 +139,47 @@ func main() {
 		server.SetHeader(w)
 		server.UploadHandler(w, r)
 		w.Write([]byte{http.StatusOK})
+	})
+
+	router.POST("/api/addnewcontent", func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+		server.SetHeader(w)
+		date := time.Now()
+		contentid := uuid.New().String()
+
+		newContent := models.Content{
+			Id:          contentid,
+			Tittle:      "No Title",
+			CreatorId:   r.URL.Query().Get("creatorid"),
+			PreviewImg:  "none",
+			PreviewDesc: "this content no peview description yet",
+			Posted:      date.Format("02 Jan 2006"),
+			Updated:     "none",
+			ContentLink: "bla-bla-bla",
+		}
+
+		err := server.PostNewContent(db, r.Context(), newContent)
+		server.CheckErr(err)
+
+		res := models.ResponData{
+			Code: 200,
+			Data: contentid,
+		}
+		encode := json.NewEncoder(w)
+		errr := encode.Encode(res)
+		server.CheckErr(errr)
+	})
+
+	router.POST("/api/updatecontenttittle", func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+		//fmt.Println(r.URL.Query().Get("tittle"), r.URL.Query().Get("contentid"))
+		server.SetHeader(w)
+		server.UpdateContentTittle(db, r.Context(), r.URL.Query().Get("tittle"), r.URL.Query().Get("contentid"))
+	})
+
+	router.DELETE("/api/deletecontent", func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+		server.SetHeader(w)
+		fmt.Println(r.URL.Query().Get("contentid"), " requested...")
+		server.DeleteContent(db, r.Context(), r.URL.Query().Get("contentid"))
+		server.DeleteSubContentRange(db, r.Context(), "-1", r.URL.Query().Get("contentid"))
 	})
 
 	// defer close
