@@ -15,7 +15,7 @@ const api = import.meta.env.GO_API
     </head>
     <body>
         <Header/>
-        <div class="sm:w-11/12 md:w-1/2 lg:w-1/3 mx-auto">
+        <div class="relative sm:w-11/12 md:w-1/2 lg:w-1/3 mx-auto">
             <ContentColection creatorid={content}/>
             <div id="write-new">
                 <Button text="Write New"/>
@@ -28,7 +28,7 @@ const api = import.meta.env.GO_API
                     }
                     const urlParams = new URLSearchParams({
                         creatorid: '28808f25-010b-42fc-b5b2-9b19c34f3443'
-                    }).toString();
+                    }).toString()
                     console.log("post new content")
                     await fetch(api + `/api/addnewcontent?${urlParams}`, {
                         method: 'POST',

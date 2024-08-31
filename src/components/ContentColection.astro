@@ -8,22 +8,11 @@ const {creatorid} = Astro.props
 const data = await db.select().from(content).where(eq(content.creatorId, creatorid))
 
 const api = import.meta.env.GO_API
-
-async function Delete(data){
-        console.log('delete is clicked')
-        const urlParams = new URLSearchParams({
-            creatorid: data
-        }).toString()
-        await fetch(api + '/api/deletecontent?'+ urlParams, {
-            method: 'DELETE',
-            mode: 'cors'
-        })
-    }
 ---
 
-<div>
+<div class="relative">
     {data.map(res => {
-        return <div class="my-5 h-20">
+        return <div class="relative my-5">
             <br/>
             <div class="flex">
                 <div class="h-10 w-full">
