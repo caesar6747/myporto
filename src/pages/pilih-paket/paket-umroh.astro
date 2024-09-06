@@ -1,0 +1,19 @@
+---
+import Pages from '../../components/vue/test/test1.vue'
+---
+
+<!doctype html>
+<html lang="en" class="dark">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Hitung paket custom</title>
+    </head>
+    <body>
+        <div class="sm:w-11/12 md:w-1/2 mx-auto">
+            <div>
+                <Pages client:only="vue"/>
+            </div>
+        </div>
+    </body>
+</html>

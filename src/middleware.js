@@ -17,7 +17,6 @@ export const onRequest = defineMiddleware(async (context, next) => {
     const Token = context.cookies.get("token")?.value ?? "no-token"
 
     console.log(!PUBLIC_URL.includes(context.url.pathname))
-    const wahwe = await db.select().from(Account).where(eq(Account.id, "blablablabla"))
     const d = await db.select().from(Account)
     const z = await db.select().from(Session)
     console.log(d)
@@ -129,7 +128,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
                         context.cookies.delete("user")
                         return context.redirect("/login", 302)
                     }
-                    const expired = moment(new Date().now).add(5, 'm').toDate();
+                    const expired = moment(new Date().now).add(60, 'm').toDate();
                     await db.update(Session).set({expiredDate: String(expired)}).where(eq(Session.usernameId, findUser[0].id))
                     return next()
                 }else{
